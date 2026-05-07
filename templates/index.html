@@ -539,7 +539,21 @@ function checkReady(){
   document.getElementById('btn-go').disabled=!(selFile&&key);
 }
 function updateGoBtn(){checkReady()}
-document.getElementById('nim-key').addEventListener('input',checkReady);
+document.getElementById('nim-key').addEventListener('input',function(){
+  const val=this.value.trim();
+  if(val)localStorage.setItem('nim_api_key',val);
+  else localStorage.removeItem('nim_api_key');
+  checkReady();
+});
+// Restore saved key on load
+(function(){
+  const saved=localStorage.getItem('nim_api_key');
+  if(saved){
+    const inp=document.getElementById('nim-key');
+    inp.value=saved;
+    checkReady();
+  }
+})();
 function togglePw(){const i=document.getElementById('nim-key');i.type=i.type==='password'?'text':'password'}
 function fmtBytes(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(1)+' MB'}
 

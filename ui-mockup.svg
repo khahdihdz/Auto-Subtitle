@@ -1,0 +1,214 @@
+<svg width="100%" viewBox="0 0 680 1420" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>SubViet Web UI mockup</title>
+<desc>Mockup giao diện web SubViet: header, config card, burn-in card, upload card, progress card, result card</desc>
+<defs>
+  <linearGradient id="gAcc" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#6366f1"/>
+    <stop offset="100%" stop-color="#818cf8"/>
+  </linearGradient>
+  <linearGradient id="gLogo" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#6366f1"/>
+    <stop offset="100%" stop-color="#ec4899"/>
+  </linearGradient>
+  <linearGradient id="gPbar" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="#6366f1"/>
+    <stop offset="100%" stop-color="#ec4899"/>
+  </linearGradient>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M40 0L0 0 0 40" fill="none" stroke="#252538" stroke-width="0.5"/>
+  </pattern>
+</defs>
+
+<!-- page bg -->
+<rect width="680" height="1420" fill="#080810"/>
+<rect width="680" height="1420" fill="url(#grid)" opacity="0.4"/>
+<ellipse cx="100" cy="120" rx="220" ry="160" fill="#1e0a4a" opacity="0.18"/>
+<ellipse cx="580" cy="1300" rx="200" ry="150" fill="#0a1e4a" opacity="0.15"/>
+
+<!-- HEADER -->
+<rect x="290" y="32" width="52" height="52" rx="16" fill="url(#gLogo)" opacity="0.9"/>
+<text x="316" y="62" text-anchor="middle" font-size="26" font-family="sans-serif">&#x1F3AC;</text>
+<text x="352" y="64" font-family="sans-serif" font-size="28" font-weight="800" fill="#c0c0ff" letter-spacing="-0.5">SubViet</text>
+<text x="340" y="100" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#8888aa">Phu de tieng Viet tu nhien &#xB7; Burn-in truc tiep vao video &#xB7; NVIDIA NIM + Whisper</text>
+
+<!-- CARD 1: Cai dat API -->
+<rect x="20" y="126" width="640" height="284" rx="14" fill="#0f0f1a" stroke="#252538" stroke-width="0.8"/>
+<rect x="20" y="126" width="640" height="1" fill="url(#gAcc)" opacity="0.25"/>
+<rect x="36" y="148" width="3" height="14" rx="2" fill="#6366f1"/>
+<text x="46" y="159" font-family="sans-serif" font-size="10" font-weight="700" fill="#6366f1" letter-spacing="1.8">CAI DAT API &amp; MODEL</text>
+
+<text x="36" y="184" font-family="sans-serif" font-size="10" font-weight="700" fill="#8888aa" letter-spacing="0.8">NVIDIA NIM API KEY</text>
+<rect x="36" y="192" width="608" height="38" rx="10" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="50" y="215" font-family="monospace" font-size="12" fill="#55556a">nvapi-&#x25CF;&#x25CF;&#x25CF;&#x25CF;&#x25CF;&#x25CF;&#x25CF;&#x25CF;&#x25CF;&#x25CF;&#x25CF;&#x25CF;&#x25CF;&#x25CF;&#x25CF;&#x25CF;&#x25CF;&#x25CF;&#x25CF;&#x25CF;</text>
+<text x="622" y="215" text-anchor="middle" font-size="14" font-family="sans-serif" fill="#8888aa">&#x1F441;</text>
+<rect x="490" y="196" width="116" height="16" rx="8" fill="#6366f108" stroke="#6366f133" stroke-width="0.5"/>
+<text x="548" y="207" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#6366f1">tu dong luu localStorage</text>
+
+<text x="36" y="249" font-family="sans-serif" font-size="10" font-weight="700" fill="#8888aa" letter-spacing="0.8">MODEL WHISPER</text>
+<rect x="36" y="256" width="290" height="36" rx="10" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="50" y="278" font-family="sans-serif" font-size="13" fill="#e2e2f0">base &#x2014; Can bang</text>
+<text x="308" y="278" font-family="sans-serif" font-size="9" fill="#8888aa">&#x25BC;</text>
+
+<text x="346" y="249" font-family="sans-serif" font-size="10" font-weight="700" fill="#8888aa" letter-spacing="0.8">NGON NGU GOC</text>
+<rect x="346" y="256" width="298" height="36" rx="10" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="360" y="278" font-family="sans-serif" font-size="13" fill="#e2e2f0">&#x1F50D; Tu dong nhan dang</text>
+<text x="626" y="278" font-family="sans-serif" font-size="9" fill="#8888aa">&#x25BC;</text>
+
+<text x="36" y="310" font-family="sans-serif" font-size="10" font-weight="700" fill="#8888aa" letter-spacing="0.8">THE LOAI PHIM</text>
+<rect x="36"  y="318" width="80"  height="26" rx="100" fill="#6366f11a" stroke="#6366f1" stroke-width="0.8"/>
+<text x="76"  y="334" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#6366f1">Tong quat</text>
+<rect x="124" y="318" width="76"  height="26" rx="100" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="162" y="334" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#8888aa">Tinh cam</text>
+<rect x="208" y="318" width="82"  height="26" rx="100" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="249" y="334" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#8888aa">Hanh dong</text>
+<rect x="298" y="318" width="76"  height="26" rx="100" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="336" y="334" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#8888aa">Hai huoc</text>
+<rect x="382" y="318" width="64"  height="26" rx="100" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="414" y="334" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#8888aa">Kinh di</text>
+<rect x="454" y="318" width="66"  height="26" rx="100" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="487" y="334" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#8888aa">Tai lieu</text>
+<rect x="528" y="318" width="56"  height="26" rx="100" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="556" y="334" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#8888aa">Anime</text>
+<rect x="592" y="318" width="60"  height="26" rx="100" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="622" y="334" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#8888aa">Tam ly</text>
+
+<!-- CARD 2: Burn-in -->
+<rect x="20" y="424" width="640" height="218" rx="14" fill="#0f0f1a" stroke="#252538" stroke-width="0.8"/>
+<rect x="20" y="424" width="640" height="1" fill="url(#gAcc)" opacity="0.25"/>
+<rect x="36" y="446" width="3" height="14" rx="2" fill="#6366f1"/>
+<text x="46" y="457" font-family="sans-serif" font-size="10" font-weight="700" fill="#6366f1" letter-spacing="1.8">RENDER PHU DE VAO VIDEO</text>
+
+<rect x="36" y="468" width="608" height="50" rx="10" fill="#6366f10a" stroke="#6366f1" stroke-width="0.8"/>
+<text x="52" y="488" font-family="sans-serif" font-size="13" font-weight="600" fill="#e2e2f0">Burn-in &#x2014; Render phu de truc tiep vao video</text>
+<text x="52" y="505" font-family="sans-serif" font-size="11" fill="#8888aa">Phu de duoc in han vao khung hinh, khong can file SRT rieng</text>
+<rect x="574" y="479" width="44" height="24" rx="12" fill="#6366f1"/>
+<circle cx="598" cy="491" r="9" fill="white"/>
+
+<text x="36" y="536" font-family="sans-serif" font-size="10" font-weight="700" fill="#8888aa" letter-spacing="0.8">STYLE PHU DE</text>
+<rect x="36"  y="544" width="126" height="42" rx="10" fill="#6366f11a" stroke="#6366f1" stroke-width="0.8"/>
+<text x="99"  y="562" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#6366f1">Classic</text>
+<text x="99"  y="576" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#6366f188">Trang vien den</text>
+<rect x="170" y="544" width="126" height="42" rx="10" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="233" y="562" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#8888aa">Cinema</text>
+<text x="233" y="576" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#55556a">Vang noi bat</text>
+<rect x="304" y="544" width="126" height="42" rx="10" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="367" y="562" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#8888aa">Netflix</text>
+<text x="367" y="576" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#55556a">Nen mo den</text>
+<rect x="438" y="544" width="104" height="42" rx="10" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="490" y="562" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#8888aa">Neon</text>
+<text x="490" y="576" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#55556a">Xanh cyan ruc</text>
+<rect x="550" y="544" width="114" height="42" rx="10" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="607" y="562" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#8888aa">Minimal</text>
+<text x="607" y="576" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#55556a">Toi gian nhe</text>
+
+<rect x="36" y="598" width="608" height="34" rx="10" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="52" y="620" font-family="sans-serif" font-size="13" font-weight="600" fill="#e2e2f0">Song ngu &#x2014; Hien thi ca goc + tieng Viet</text>
+<rect x="575" y="609" width="44" height="24" rx="12" fill="#252538"/>
+<circle cx="587" cy="621" r="9" fill="white"/>
+
+<!-- CARD 3: Upload -->
+<rect x="20" y="656" width="640" height="220" rx="14" fill="#0f0f1a" stroke="#252538" stroke-width="0.8"/>
+<rect x="20" y="656" width="640" height="1" fill="url(#gAcc)" opacity="0.25"/>
+<rect x="36" y="678" width="3" height="14" rx="2" fill="#6366f1"/>
+<text x="46" y="689" font-family="sans-serif" font-size="10" font-weight="700" fill="#6366f1" letter-spacing="1.8">TAI LEN VIDEO / AUDIO</text>
+
+<rect x="36" y="702" width="608" height="96" rx="14" fill="#161624" stroke="#3a3a58" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="340" y="740" text-anchor="middle" font-size="30" font-family="sans-serif">&#x1F39E;&#xFE0F;</text>
+<text x="340" y="762" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#e2e2f0">Keo tha hoac nhan de chon file</text>
+<text x="340" y="780" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#8888aa">mp4  mkv  avi  mov  webm  |  mp3  wav  m4a  flac</text>
+
+<rect x="36" y="808" width="608" height="38" rx="10" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="52" y="831" font-family="sans-serif" font-size="18">&#x1F3AC;</text>
+<text x="76" y="826" font-family="sans-serif" font-size="12" font-weight="600" fill="#e2e2f0">movie_sample.mp4</text>
+<text x="76" y="840" font-family="sans-serif" font-size="10" fill="#8888aa">247.3 MB</text>
+<text x="626" y="832" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#8888aa">&#x2715;</text>
+
+<rect x="36" y="856" width="608" height="44" rx="10" fill="url(#gAcc)"/>
+<text x="340" y="882" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="700" fill="white">Tao phu de tieng Viet</text>
+
+<!-- CARD 4: Progress -->
+<rect x="20" y="892" width="640" height="130" rx="14" fill="#0f0f1a" stroke="#252538" stroke-width="0.8"/>
+<rect x="20" y="892" width="640" height="1" fill="url(#gAcc)" opacity="0.25"/>
+<rect x="36" y="914" width="3" height="14" rx="2" fill="#6366f1"/>
+<text x="46" y="925" font-family="sans-serif" font-size="10" font-weight="700" fill="#6366f1" letter-spacing="1.8">DANG XU LY</text>
+<rect x="36" y="938" width="608" height="5" rx="3" fill="#161624"/>
+<rect x="36" y="938" width="380" height="5" rx="3" fill="url(#gPbar)"/>
+<text x="644" y="944" text-anchor="end" font-family="monospace" font-size="11" fill="#8888aa">62%</text>
+<rect x="36" y="954" width="608" height="38" rx="10" fill="#161624"/>
+<rect x="36" y="954" width="3" height="38" rx="1" fill="#6366f1"/>
+<text x="52" y="977" font-family="sans-serif" font-size="13" fill="#e2e2f0">Dich batch 3/5 (20 doan)...</text>
+
+<!-- CARD 5: Results -->
+<rect x="20" y="1038" width="640" height="358" rx="14" fill="#0f0f1a" stroke="#252538" stroke-width="0.8"/>
+<rect x="20" y="1038" width="640" height="1" fill="url(#gAcc)" opacity="0.25"/>
+<rect x="36" y="1060" width="3" height="14" rx="2" fill="#6366f1"/>
+<text x="46" y="1071" font-family="sans-serif" font-size="10" font-weight="700" fill="#6366f1" letter-spacing="1.8">KET QUA</text>
+
+<rect x="36"  y="1082" width="96"  height="24" rx="100" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="84"  y="1097" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#8888aa">Doan: <tspan fill="#06b6d4" font-weight="700">142</tspan></text>
+<rect x="140" y="1082" width="122" height="24" rx="100" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="201" y="1097" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#8888aa">Ngon ngu: <tspan fill="#06b6d4" font-weight="700">EN</tspan></text>
+<rect x="270" y="1082" width="122" height="24" rx="100" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="331" y="1097" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#8888aa">The loai: <tspan fill="#06b6d4" font-weight="700">general</tspan></text>
+<rect x="400" y="1082" width="120" height="24" rx="100" fill="#10b98108" stroke="#10b98133" stroke-width="0.8"/>
+<text x="460" y="1097" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#8888aa">Style: <tspan fill="#10b981" font-weight="700">classic</tspan></text>
+
+<rect x="36" y="1116" width="608" height="46" rx="10" fill="#10b98108" stroke="#10b98130" stroke-width="0.8"/>
+<text x="54" y="1137" font-size="22" font-family="sans-serif">&#x1F3AC;</text>
+<text x="82" y="1135" font-family="sans-serif" font-size="13" font-weight="700" fill="#10b981">Video da duoc render phu de thanh cong!</text>
+<text x="82" y="1151" font-family="sans-serif" font-size="11" fill="#8888aa">Phu de da in han vao video, phat tren bat ky thiet bi nao.</text>
+
+<rect x="36"  y="1172" width="200" height="48" rx="10" fill="#10b98108" stroke="#10b98144" stroke-width="0.8"/>
+<text x="56"  y="1195" font-size="16" font-family="sans-serif">&#x1F3AC;</text>
+<text x="80"  y="1190" font-family="sans-serif" font-size="11" font-weight="700" fill="#e2e2f0">Video co phu de</text>
+<text x="80"  y="1205" font-family="sans-serif" font-size="10" fill="#8888aa">MP4 · Da burn-in</text>
+<text x="222" y="1199" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#8888aa">&#x2B07;</text>
+
+<rect x="244" y="1172" width="200" height="48" rx="10" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="264" y="1195" font-size="16" font-family="sans-serif">&#x1F1FB;&#x1F1F3;</text>
+<text x="290" y="1190" font-family="sans-serif" font-size="11" font-weight="700" fill="#e2e2f0">Tieng Viet .SRT</text>
+<text x="290" y="1205" font-family="sans-serif" font-size="10" fill="#8888aa">SubRip · Phu de chinh</text>
+<text x="430" y="1199" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#8888aa">&#x2B07;</text>
+
+<rect x="452" y="1172" width="200" height="48" rx="10" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="472" y="1195" font-size="16" font-family="sans-serif">&#x1F310;</text>
+<text x="498" y="1190" font-family="sans-serif" font-size="11" font-weight="700" fill="#e2e2f0">Tieng Viet .VTT</text>
+<text x="498" y="1205" font-family="sans-serif" font-size="10" fill="#8888aa">WebVTT · Cho web</text>
+<text x="638" y="1199" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#8888aa">&#x2B07;</text>
+
+<rect x="36"  y="1228" width="200" height="48" rx="10" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="56"  y="1251" font-size="16" font-family="sans-serif">&#x1F3A8;</text>
+<text x="80"  y="1246" font-family="sans-serif" font-size="11" font-weight="700" fill="#e2e2f0">ASS co styling</text>
+<text x="80"  y="1261" font-family="sans-serif" font-size="10" fill="#8888aa">Advanced SubStation</text>
+<text x="222" y="1255" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#8888aa">&#x2B07;</text>
+
+<rect x="244" y="1228" width="200" height="48" rx="10" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="264" y="1251" font-size="16" font-family="sans-serif">&#x1F4C4;</text>
+<text x="290" y="1246" font-family="sans-serif" font-size="11" font-weight="700" fill="#e2e2f0">Ban goc .SRT</text>
+<text x="290" y="1261" font-family="sans-serif" font-size="10" fill="#8888aa">Ngon ngu goc</text>
+<text x="430" y="1255" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#8888aa">&#x2B07;</text>
+
+<rect x="452" y="1228" width="200" height="48" rx="10" fill="#161624" stroke="#252538" stroke-width="0.8"/>
+<text x="472" y="1251" font-size="16" font-family="sans-serif">&#x1F4CB;</text>
+<text x="498" y="1246" font-family="sans-serif" font-size="11" font-weight="700" fill="#e2e2f0">Song ngu .SRT</text>
+<text x="498" y="1261" font-family="sans-serif" font-size="10" fill="#8888aa">Goc + Tieng Viet</text>
+<text x="638" y="1255" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#8888aa">&#x2B07;</text>
+
+<line x1="36" y1="1288" x2="644" y2="1288" stroke="#252538" stroke-width="0.8"/>
+<text x="36" y="1306" font-family="sans-serif" font-size="10" font-weight="700" fill="#8888aa" letter-spacing="1.2">XEM TRUOC BAN DICH</text>
+<rect x="36" y="1314" width="608" height="26" rx="8" fill="#161624"/>
+<text x="52"  y="1330" font-family="sans-serif" font-size="10" font-weight="700" fill="#8888aa">THOI GIAN</text>
+<text x="170" y="1330" font-family="sans-serif" font-size="10" font-weight="700" fill="#8888aa">NGUYEN BAN</text>
+<text x="400" y="1330" font-family="sans-serif" font-size="10" font-weight="700" fill="#8888aa">TIENG VIET</text>
+<line x1="36" y1="1340" x2="644" y2="1340" stroke="#252538" stroke-width="0.5"/>
+<text x="52"  y="1355" font-family="monospace" font-size="10" fill="#55556a">00:00:04,210</text>
+<text x="170" y="1355" font-family="sans-serif" font-size="12" fill="#8888aa" font-style="italic">You have to trust the process.</text>
+<text x="400" y="1355" font-family="sans-serif" font-size="12" fill="#e2e2f0" font-weight="500">Ban phai tin vao qua trinh.</text>
+<line x1="36" y1="1364" x2="644" y2="1364" stroke="#252538" stroke-width="0.5"/>
+<text x="52"  y="1379" font-family="monospace" font-size="10" fill="#55556a">00:00:08,540</text>
+<text x="170" y="1379" font-family="sans-serif" font-size="12" fill="#8888aa" font-style="italic">There's no going back now.</text>
+<text x="400" y="1379" font-family="sans-serif" font-size="12" fill="#e2e2f0" font-weight="500">Gio khong con duong quay lai.</text>
+
+<rect x="36" y="1392" width="120" height="28" rx="8" fill="none" stroke="#252538" stroke-width="0.8"/>
+<text x="96" y="1409" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#8888aa">Tao phu de moi</text>
+</svg>
