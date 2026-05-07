@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SubViet — Phụ Đề Tiếng Việt Tự Nhiên</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080810;--s1:#0f0f1a;--s2:#161624;--s3:#1e1e2e;
+  --b1:#252538;--b2:#3a3a58;
+  --acc:#6366f1;--acc2:#ec4899;--acc3:#06b6d4;--acc4:#10b981;
+  --tx:#e2e2f0;--txm:#8888aa;--txd:#55556a;
+  --ok:#10b981;--err:#f43f5e;--warn:#f59e0b;
+  --r:14px;--r2:10px;--r3:8px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden}
+
+/* Atmospheric background */
+body::before{content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse 70% 50% at 15% 15%,#1e0a4a18,transparent 65%),
+             radial-gradient(ellipse 60% 70% at 85% 85%,#0a1e4a18,transparent 65%),
+             radial-gradient(ellipse 40% 40% at 50% 50%,#4a0a1a0a,transparent 70%);
+  pointer-events:none;z-index:0}
+
+/* Grid texture */
+body::after{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(var(--b1)1px,transparent 1px),linear-gradient(90deg,var(--b1)1px,transparent 1px);
+  background-size:40px 40px;opacity:0.12;pointer-events:none;z-index:0}
+
+.wrap{max-width:860px;margin:0 auto;padding:0 20px 60px;position:relative;z-index:1}
+
+/* ── Header ── */
+header{padding:48px 0 36px;text-align:center}
+.logo{display:inline-flex;align-items:center;gap:14px;margin-bottom:14px}
+.logo-badge{width:52px;height:52px;background:linear-gradient(135deg,var(--acc),var(--acc2));
+  border-radius:16px;display:flex;align-items:center;justify-content:center;
+  font-size:26px;box-shadow:0 0 40px #6366f144,0 0 0 1px #6366f133}
+.logo-name{font-size:34px;font-weight:800;letter-spacing:-1px;
+  background:linear-gradient(135deg,#fff 0%,#c0c0ff 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tagline{font-size:14px;color:var(--txm);letter-spacing:0.2px}
+.tagline b{color:var(--acc3);font-weight:600}
+
+/* ── Cards ── */
+.card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);
+  padding:24px;margin-bottom:16px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,#6366f133,transparent)}
+.card-h{font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;
+  color:var(--acc);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.card-h::before{content:'';width:3px;height:14px;background:var(--acc);border-radius:2px;display:block}
+
+/* ── Form elements ── */
+.field{margin-bottom:14px}
+label.lbl{display:block;font-size:11px;font-weight:700;letter-spacing:.8px;
+  text-transform:uppercase;color:var(--txm);margin-bottom:7px}
+.inp-wrap{position:relative}
+input[type=password],input[type=text],select{
+  width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);
+  padding:11px 14px;color:var(--tx);font-family:inherit;font-size:14px;
+  transition:border-color .2s,box-shadow .2s;outline:none;-webkit-appearance:none;appearance:none}
+input[type=password]:focus,input[type=text]:focus,select:focus{
+  border-color:var(--acc);box-shadow:0 0 0 3px #6366f11a}
+select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%238888aa' d='M5 6L0 0h10z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+.eye-btn{position:absolute;right:11px;top:50%;transform:translateY(-50%);
+  background:none;border:none;color:var(--txm);cursor:pointer;font-size:16px;padding:4px;
+  transition:color .2s}
+.eye-btn:hover{color:var(--tx)}
+
+/* ── Grid ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:580px){.g2{grid-template-columns:1fr}}
+
+/* ── Genre pills ── */
+.pill-group{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+.pill{padding:6px 13px;border-radius:100px;border:1px solid var(--b1);background:var(--s2);
+  color:var(--txm);font-size:12.5px;font-weight:500;cursor:pointer;
+  transition:all .2s;user-select:none}
+.pill:hover{border-color:var(--acc);color:var(--tx)}
+.pill.on{background:#6366f11a;border-color:var(--acc);color:var(--acc);box-shadow:0 0 10px #6366f118}
+
+/* ── Style pills ── */
+.style-pill{padding:8px 14px;border-radius:10px;border:1px solid var(--b1);background:var(--s2);
+  color:var(--txm);font-size:12px;font-weight:500;cursor:pointer;
+  transition:all .2s;user-select:none;display:flex;flex-direction:column;gap:2px;align-items:center}
+.style-pill .sp-name{font-weight:700;font-size:13px}
+.style-pill .sp-desc{font-size:10px;opacity:.7}
+.style-pill:hover{border-color:var(--acc);color:var(--tx)}
+.style-pill.on{background:#6366f11a;border-color:var(--acc);color:var(--acc)}
+.style-pills{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+@media(max-width:500px){.style-pills{grid-template-columns:repeat(2,1fr)}}
+
+/* ── Toggle switch ── */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;
+  padding:12px 14px;background:var(--s2);border:1px solid var(--b1);
+  border-radius:var(--r2);cursor:pointer;transition:border-color .2s;user-select:none;margin-bottom:10px}
+.toggle-row:hover{border-color:var(--b2)}
+.toggle-row.active{border-color:var(--acc);background:#6366f10a}
+.toggle-info{display:flex;flex-direction:column;gap:3px}
+.toggle-title{font-size:14px;font-weight:600;color:var(--tx)}
+.toggle-sub{font-size:12px;color:var(--txm)}
+.toggle-sw{width:44px;height:24px;background:var(--b1);border-radius:100px;
+  position:relative;transition:background .3s;flex-shrink:0}
+.toggle-sw::after{content:'';position:absolute;top:3px;left:3px;
+  width:18px;height:18px;border-radius:50%;background:#fff;
+  transition:transform .3s;box-shadow:0 1px 4px #0004}
+.toggle-row.active .toggle-sw{background:var(--acc)}
+.toggle-row.active .toggle-sw::after{transform:translateX(20px)}
+
+/* ── Burn-in options (collapsible) ── */
+.burn-opts{display:none;padding:14px;background:var(--s3);
+  border:1px solid var(--b1);border-radius:var(--r2);margin-top:-6px;margin-bottom:10px}
+.burn-opts.show{display:block}
+.burn-opts .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media(max-width:620px){.burn-opts .g3{grid-template-columns:1fr 1fr}}
+@media(max-width:420px){.burn-opts .g3{grid-template-columns:1fr}}
+
+/* Quality slider */
+.slider-wrap{display:flex;align-items:center;gap:10px}
+input[type=range]{flex:1;height:4px;accent-color:var(--acc);cursor:pointer}
+.slider-val{font-family:'JetBrains Mono',monospace;font-size:13px;
+  color:var(--acc);min-width:30px;text-align:center}
+
+/* ── Drop zone ── */
+.drop-zone{border:2px dashed var(--b2);border-radius:var(--r);
+  padding:44px 20px;text-align:center;cursor:pointer;
+  transition:all .3s;background:var(--s2);position:relative}
+.drop-zone:hover,.drop-zone.over{border-color:var(--acc);background:#6366f108;
+  box-shadow:0 0 32px #6366f10e inset}
+.drop-icon{font-size:44px;display:block;margin-bottom:10px}
+.drop-title{font-size:17px;font-weight:700;margin-bottom:6px}
+.drop-sub{font-size:12.5px;color:var(--txm);line-height:1.7}
+.drop-sub code{font-family:'JetBrains Mono',monospace;font-size:11px;
+  background:var(--s1);padding:2px 6px;border-radius:4px;border:1px solid var(--b1);color:var(--acc3)}
+#file-input{display:none}
+.file-row{display:flex;align-items:center;gap:12px;padding:12px 14px;
+  background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);margin-top:14px}
+.file-ico{font-size:22px}
+.file-name{font-size:13px;font-weight:600;word-break:break-all}
+.file-sz{font-size:11px;color:var(--txm);margin-top:2px}
+.file-rm{margin-left:auto;background:none;border:none;color:var(--txm);cursor:pointer;
+  font-size:18px;padding:4px 6px;border-radius:6px;transition:all .2s}
+.file-rm:hover{color:var(--err);background:#f43f5e11}
+
+/* ── Submit ── */
+.btn-go{width:100%;padding:15px;margin-top:14px;
+  background:linear-gradient(135deg,var(--acc),#818cf8);border:none;border-radius:var(--r2);
+  color:#fff;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;
+  transition:all .3s;box-shadow:0 4px 24px #6366f140;position:relative;overflow:hidden}
+.btn-go::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,transparent,#ffffff1a,transparent);
+  transform:translateX(-100%);transition:transform .5s}
+.btn-go:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 32px #6366f160}
+.btn-go:hover:not(:disabled)::after{transform:translateX(100%)}
+.btn-go:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* ── Progress ── */
+#prog-card{display:none}
+.pbar-wrap{background:var(--s2);border-radius:100px;height:5px;overflow:hidden;margin:14px 0 6px}
+.pbar{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--acc),var(--acc2));
+  transition:width .6s ease;box-shadow:0 0 10px #6366f166;width:0%}
+.pbar-wrap.pulse .pbar{animation:pulse 1.4s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.pct{font-size:12px;color:var(--txm);text-align:right;font-family:'JetBrains Mono',monospace}
+.pmsg{font-size:14px;color:var(--tx);padding:11px 14px;background:var(--s2);
+  border-radius:var(--r2);border-left:3px solid var(--acc);margin-top:12px;min-height:42px}
+.err-box{display:none;padding:14px;background:#f43f5e0e;border:1px solid #f43f5e33;
+  border-radius:var(--r2);color:var(--err);font-size:13px;margin-top:12px;white-space:pre-wrap}
+
+/* ── Results ── */
+#res-card{display:none}
+.stats-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.chip{display:flex;align-items:center;gap:6px;padding:6px 12px;
+  background:var(--s2);border:1px solid var(--b1);border-radius:100px;font-size:12.5px}
+.chip .cv{font-weight:700;color:var(--acc3);font-family:'JetBrains Mono',monospace}
+.chip.burned{border-color:var(--ok)33;background:#10b98108}
+.chip.burned .cv{color:var(--ok)}
+
+/* Video burned highlight */
+.burned-banner{display:flex;align-items:center;gap:12px;
+  padding:14px 18px;background:linear-gradient(135deg,#10b98112,#06b6d412);
+  border:1px solid #10b98130;border-radius:var(--r2);margin-bottom:16px}
+.burned-banner .bb-icon{font-size:28px}
+.burned-banner .bb-title{font-size:14px;font-weight:700;color:var(--ok)}
+.burned-banner .bb-sub{font-size:12px;color:var(--txm);margin-top:2px}
+
+/* Download grid */
+.dl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:22px}
+.btn-dl{display:flex;align-items:center;gap:10px;padding:13px 15px;
+  background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);
+  color:var(--tx);text-decoration:none;cursor:pointer;transition:all .2s;
+  font-family:inherit;font-size:13px;font-weight:600}
+.btn-dl:hover{border-color:var(--acc3);background:#06b6d408;transform:translateY(-1px)}
+.btn-dl.main{border-color:var(--ok)44;background:#10b98108}
+.btn-dl.main:hover{border-color:var(--ok);background:#10b98112}
+.btn-dl .di{font-size:20px}
+.btn-dl .dd{display:flex;flex-direction:column}
+.btn-dl .dn{font-size:12.5px;font-weight:700}
+.btn-dl .ds{font-size:10.5px;color:var(--txm);font-weight:400}
+.dl-arrow{margin-left:auto;font-size:14px;color:var(--txm)}
+
+/* Divider */
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--b1),transparent);margin:20px 0}
+
+/* Preview table */
+.preview-lbl{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--txm);margin-bottom:10px}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:9px 12px;background:var(--s2);color:var(--txm);
+  font-size:10.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;border-bottom:1px solid var(--b1)}
+th:first-child{border-radius:8px 0 0 0}th:last-child{border-radius:0 8px 0 0}
+td{padding:11px 12px;border-bottom:1px solid var(--b1);vertical-align:top;line-height:1.55}
+tr:last-child td{border-bottom:none}
+.ts{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--txd);white-space:nowrap}
+.torig{color:var(--txm);font-style:italic}
+.tvi{color:var(--tx);font-weight:500}
+
+/* Reset btn */
+.btn-reset{background:none;border:1px solid var(--b1);border-radius:var(--r3);
+  color:var(--txm);padding:8px 16px;font-family:inherit;font-size:13px;
+  cursor:pointer;transition:all .2s;margin-top:20px}
+.btn-reset:hover{border-color:var(--txm);color:var(--tx)}
+
+footer{text-align:center;padding:32px 0;color:var(--txd);font-size:12px}
+footer a{color:var(--acc);text-decoration:none}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--s1)}
+::-webkit-scrollbar-thumb{background:var(--b2);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--acc)}
+
+/* ── Donate card ── */
+.donate-card{
+  background:linear-gradient(135deg,var(--s1) 0%,#1a0a2e 100%);
+  border:1px solid #ec489933;border-radius:var(--r);
+  padding:28px 24px;margin-bottom:16px;position:relative;overflow:hidden;
+  text-align:center}
+.donate-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--acc2),var(--acc),transparent)}
+.donate-card::after{content:'☕';position:absolute;right:20px;bottom:14px;
+  font-size:64px;opacity:0.07;pointer-events:none}
+.donate-heart{font-size:38px;margin-bottom:8px;display:block;
+  animation:heartbeat 2s ease infinite}
+@keyframes heartbeat{0%,100%{transform:scale(1)}15%{transform:scale(1.18)}30%{transform:scale(1)}}
+.donate-title{font-size:18px;font-weight:800;letter-spacing:-.5px;
+  background:linear-gradient(135deg,#f9a8d4,var(--acc2),#c084fc);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+.donate-sub{font-size:13px;color:var(--txm);line-height:1.65;max-width:420px;margin:0 auto 20px}
+.donate-sub b{color:var(--tx);font-weight:600}
+.btn-donate{display:inline-flex;align-items:center;gap:10px;
+  padding:13px 28px;border-radius:50px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--acc2),#c026d3);
+  color:#fff;font-family:inherit;font-size:15px;font-weight:700;
+  text-decoration:none;transition:all .3s;
+  box-shadow:0 4px 24px #ec489940,0 0 0 1px #ec489920}
+.btn-donate:hover{transform:translateY(-3px) scale(1.03);
+  box-shadow:0 8px 36px #ec489960,0 0 0 1px #ec489940}
+.btn-donate .dn-ico{font-size:19px}
+.donate-note{margin-top:12px;font-size:11px;color:var(--txd)}
+
+/* ── Floating donate button ── */
+.float-donate{position:fixed;bottom:24px;right:24px;z-index:999;
+  display:flex;align-items:center;gap:8px;
+  padding:11px 18px 11px 14px;border-radius:50px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--acc2),#c026d3);
+  color:#fff;font-family:inherit;font-size:13px;font-weight:700;
+  text-decoration:none;
+  box-shadow:0 4px 20px #ec489950,0 0 0 1px #ec489920;
+  transition:all .3s;animation:float-in .5s ease both}
+@keyframes float-in{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.float-donate:hover{transform:translateY(-3px);box-shadow:0 8px 28px #ec489970}
+.float-donate .fd-ico{font-size:17px;animation:heartbeat 2s ease infinite}
+@media(max-width:480px){.float-donate .fd-txt{display:none}}
+@media(max-width:480px){.float-donate{padding:12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- Header -->
+<header>
+  <div class="logo">
+    <div class="logo-badge">🎬</div>
+    <div class="logo-name">SubViet</div>
+  </div>
+  <p class="tagline">Phụ đề tiếng Việt <b>tự nhiên</b> · Burn-in trực tiếp vào video · NVIDIA NIM + Whisper</p>
+</header>
+
+<!-- ── Config card ── -->
+<div class="card">
+  <div class="card-h">Cài đặt API & Model</div>
+
+  <div class="field">
+    <label class="lbl">NVIDIA NIM API KEY</label>
+    <div class="inp-wrap">
+      <input type="password" id="nim-key" placeholder="nvapi-xxxxxxxxxxxxxxxxxxxx" oninput="checkReady()">
+      <button class="eye-btn" onclick="togglePw()" type="button">👁</button>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="field">
+      <label class="lbl">Model Whisper</label>
+      <select id="whisper-model">
+        <option value="tiny">tiny — Nhanh nhất</option>
+        <option value="base" selected>base — Cân bằng</option>
+        <option value="small">small — Chính xác hơn</option>
+        <option value="medium">medium — Rất chính xác</option>
+        <option value="large">large — Tốt nhất (chậm)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label class="lbl">Ngôn ngữ gốc</label>
+      <select id="source-lang">
+        <option value="auto">🔍 Tự động nhận dạng</option>
+        <option value="en">🇺🇸 English</option>
+        <option value="ja">🇯🇵 日本語</option>
+        <option value="ko">🇰🇷 한국어</option>
+        <option value="zh">🇨🇳 中文</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="de">🇩🇪 Deutsch</option>
+        <option value="th">🇹🇭 ภาษาไทย</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="lbl">Thể loại phim</label>
+    <div class="pill-group" id="genre-pills">
+      <div class="pill on" data-g="general">🌐 Tổng quát</div>
+      <div class="pill" data-g="romance">💕 Tình cảm</div>
+      <div class="pill" data-g="action">💥 Hành động</div>
+      <div class="pill" data-g="comedy">😄 Hài hước</div>
+      <div class="pill" data-g="horror">👻 Kinh dị</div>
+      <div class="pill" data-g="documentary">📽️ Tài liệu</div>
+      <div class="pill" data-g="anime">⚡ Anime</div>
+      <div class="pill" data-g="drama">🎭 Tâm lý</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Burn-in card ── -->
+<div class="card">
+  <div class="card-h">Render phụ đề vào video</div>
+
+  <!-- Burn-in toggle -->
+  <div class="toggle-row" id="burn-toggle" onclick="toggleBurn()">
+    <div class="toggle-info">
+      <div class="toggle-title">🔥 Burn-in — Render phụ đề trực tiếp vào video</div>
+      <div class="toggle-sub">Phụ đề được "in" hẳn vào khung hình, không cần file SRT riêng</div>
+    </div>
+    <div class="toggle-sw"></div>
+  </div>
+
+  <!-- Burn options -->
+  <div class="burn-opts" id="burn-opts">
+    <div class="field">
+      <label class="lbl">Style phụ đề</label>
+      <div class="style-pills" id="style-pills">
+        <div class="style-pill on" data-s="classic"><span class="sp-name">🎬 Classic</span><span class="sp-desc">Trắng viền đen</span></div>
+        <div class="style-pill" data-s="cinema"><span class="sp-name">🌟 Cinema</span><span class="sp-desc">Vàng nổi bật</span></div>
+        <div class="style-pill" data-s="netflix"><span class="sp-name">🟥 Netflix</span><span class="sp-desc">Nền mờ đen</span></div>
+        <div class="style-pill" data-s="neon"><span class="sp-name">💜 Neon</span><span class="sp-desc">Xanh cyan rực</span></div>
+        <div class="style-pill" data-s="minimal"><span class="sp-name">⬜ Minimal</span><span class="sp-desc">Tối giản nhẹ</span></div>
+        <div class="style-pill" data-s="drama"><span class="sp-name">🎭 Drama</span><span class="sp-desc">Nền mờ đẹp</span></div>
+      </div>
+    </div>
+    <div class="field" style="margin-top:14px">
+      <label class="lbl">Chất lượng video (CRF — thấp hơn = đẹp hơn, nặng hơn)</label>
+      <div class="slider-wrap">
+        <span style="font-size:11px;color:var(--txm)">Đẹp</span>
+        <input type="range" id="quality-slider" min="18" max="32" value="23"
+               oninput="document.getElementById('q-val').textContent=this.value">
+        <span style="font-size:11px;color:var(--txm)">Nhỏ</span>
+        <span class="slider-val" id="q-val">23</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bilingual toggle -->
+  <div class="toggle-row" id="bi-toggle" onclick="toggleBi()">
+    <div class="toggle-info">
+      <div class="toggle-title">📋 Song ngữ — Hiển thị cả gốc + tiếng Việt</div>
+      <div class="toggle-sub">Dòng gốc nhỏ phía trên, tiếng Việt lớn phía dưới</div>
+    </div>
+    <div class="toggle-sw"></div>
+  </div>
+</div>
+
+<!-- ── Upload card ── -->
+<div class="card">
+  <div class="card-h">Tải lên Video / Audio</div>
+
+  <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+    <span class="drop-icon">🎞️</span>
+    <div class="drop-title">Kéo thả hoặc nhấn để chọn file</div>
+    <div class="drop-sub">
+      Video: <code>mp4</code> <code>mkv</code> <code>avi</code> <code>mov</code> <code>webm</code><br>
+      Audio: <code>mp3</code> <code>wav</code> <code>m4a</code> <code>flac</code>
+    </div>
+  </div>
+  <input type="file" id="file-input" accept=".mp4,.mkv,.avi,.mov,.webm,.mp3,.wav,.m4a,.flac,.ogg">
+
+  <div id="file-info" style="display:none" class="file-row">
+    <span class="file-ico" id="file-ico">🎬</span>
+    <div><div class="file-name" id="file-nm"></div><div class="file-sz" id="file-sz"></div></div>
+    <button class="file-rm" onclick="removeFile()">✕</button>
+  </div>
+
+  <button class="btn-go" id="btn-go" onclick="submitJob()" disabled>✨ Tạo phụ đề tiếng Việt</button>
+</div>
+
+<!-- ── Progress card ── -->
+<div class="card" id="prog-card">
+  <div class="card-h">Đang xử lý</div>
+  <div class="pbar-wrap" id="pbar-wrap"><div class="pbar" id="pbar"></div></div>
+  <div class="pct" id="pct">0%</div>
+  <div class="pmsg" id="pmsg">⏳ Đang khởi động...</div>
+  <div class="err-box" id="err-box"></div>
+</div>
+
+<!-- ── Results card ── -->
+<div class="card" id="res-card">
+  <div class="card-h">✅ Kết quả</div>
+  <div class="stats-row" id="stats-row"></div>
+  <div id="burned-banner" style="display:none" class="burned-banner">
+    <div class="bb-icon">🎬</div>
+    <div><div class="bb-title">Video đã được render phụ đề thành công!</div>
+    <div class="bb-sub">Phụ đề đã in hẳn vào video, phát trên bất kỳ thiết bị nào không cần file SRT.</div></div>
+  </div>
+  <div class="dl-grid" id="dl-grid"></div>
+  <div class="divider"></div>
+  <div class="preview-lbl">👁 Xem trước bản dịch</div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Thời gian</th><th>Nguyên bản</th><th>Tiếng Việt</th></tr></thead>
+      <tbody id="prev-body"></tbody>
+    </table>
+  </div>
+  <button class="btn-reset" onclick="resetAll()">↩ Tạo phụ đề mới</button>
+</div>
+
+<!-- ── Donate card ── -->
+<div class="donate-card">
+  <span class="donate-heart">☕</span>
+  <div class="donate-title">Ủng hộ tác giả</div>
+  <p class="donate-sub">
+    SubViet được tạo ra miễn phí &amp; mã nguồn mở.<br>
+    Nếu công cụ này giúp ích cho bạn, hãy mời tác giả một ly cà phê để tiếp tục phát triển <b>thêm tính năng mới</b> nhé! 🚀
+  </p>
+  <a class="btn-donate" href="https://khahdihdz.github.io" target="_blank" rel="noopener">
+    <span class="dn-ico">☕</span>
+    Ủng hộ tác giả
+  </a>
+  <div class="donate-note">Mọi sự ủng hộ đều có ý nghĩa rất lớn 💜</div>
+</div>
+
+<footer>
+  SubViet · <a href="https://github.com/openai/whisper" target="_blank">OpenAI Whisper</a> + <a href="https://build.nvidia.com" target="_blank">NVIDIA NIM</a> (Llama 3.3 70B) · FFmpeg burn-in
+  · Made with ❤️ by <a href="https://khahdihdz.github.io" target="_blank">khahdihdz</a>
+</footer>
+
+<!-- Floating donate button -->
+<a class="float-donate" href="https://khahdihdz.github.io" target="_blank" rel="noopener">
+  <span class="fd-ico">☕</span>
+  <span class="fd-txt">Ủng hộ tác giả</span>
+</a>
+</div>
+
+<script>
+let selFile=null, jobId=null, pollTmr=null;
+let curGenre='general', curStyle='classic', burnOn=false, biOn=false;
+
+// Genre pills
+document.getElementById('genre-pills').addEventListener('click',e=>{
+  const p=e.target.closest('.pill'); if(!p) return;
+  document.querySelectorAll('.pill').forEach(x=>x.classList.remove('on'));
+  p.classList.add('on'); curGenre=p.dataset.g;
+});
+
+// Style pills
+document.getElementById('style-pills').addEventListener('click',e=>{
+  const p=e.target.closest('.style-pill'); if(!p) return;
+  document.querySelectorAll('.style-pill').forEach(x=>x.classList.remove('on'));
+  p.classList.add('on'); curStyle=p.dataset.s;
+});
+
+function toggleBurn(){
+  burnOn=!burnOn;
+  const t=document.getElementById('burn-toggle');
+  const o=document.getElementById('burn-opts');
+  t.classList.toggle('active',burnOn);
+  o.classList.toggle('show',burnOn);
+  updateGoBtn();
+}
+
+function toggleBi(){
+  biOn=!biOn;
+  document.getElementById('bi-toggle').classList.toggle('active',biOn);
+}
+
+// Drag & drop
+const dz=document.getElementById('drop-zone');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over')});
+dz.addEventListener('dragleave',()=>dz.classList.remove('over'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('over');const f=e.dataTransfer.files[0];if(f)handleFile(f)});
+document.getElementById('file-input').addEventListener('change',e=>{if(e.target.files[0])handleFile(e.target.files[0])});
+
+function handleFile(f){
+  selFile=f;
+  const isVid=/\.(mp4|mkv|avi|mov|webm)$/i.test(f.name);
+  document.getElementById('file-ico').textContent=isVid?'🎬':'🎵';
+  document.getElementById('file-nm').textContent=f.name;
+  document.getElementById('file-sz').textContent=fmtBytes(f.size);
+  document.getElementById('file-info').style.display='flex';
+  document.getElementById('drop-zone').style.display='none';
+  // Show/hide burn toggle based on file type
+  document.getElementById('burn-toggle').style.opacity=isVid?'1':'0.4';
+  document.getElementById('burn-toggle').style.pointerEvents=isVid?'':'none';
+  if(!isVid&&burnOn)toggleBurn();
+  checkReady();
+}
+
+function removeFile(){
+  selFile=null;
+  document.getElementById('file-input').value='';
+  document.getElementById('file-info').style.display='none';
+  document.getElementById('drop-zone').style.display='block';
+  checkReady();
+}
+
+function checkReady(){
+  const key=document.getElementById('nim-key').value.trim();
+  document.getElementById('btn-go').disabled=!(selFile&&key);
+}
+function updateGoBtn(){checkReady()}
+document.getElementById('nim-key').addEventListener('input',checkReady);
+function togglePw(){const i=document.getElementById('nim-key');i.type=i.type==='password'?'text':'password'}
+function fmtBytes(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(1)+' MB'}
+
+async function submitJob(){
+  const key=document.getElementById('nim-key').value.trim();
+  if(!selFile||!key)return;
+  document.getElementById('res-card').style.display='none';
+  document.getElementById('prog-card').style.display='block';
+  document.getElementById('err-box').style.display='none';
+  document.getElementById('btn-go').disabled=true;
+  const fd=new FormData();
+  fd.append('file',selFile);
+  fd.append('nim_api_key',key);
+  fd.append('whisper_model',document.getElementById('whisper-model').value);
+  fd.append('source_lang',document.getElementById('source-lang').value);
+  fd.append('genre',curGenre);
+  fd.append('bilingual',biOn);
+  fd.append('burn_in',burnOn);
+  fd.append('sub_style',curStyle);
+  fd.append('video_quality',document.getElementById('quality-slider').value);
+  try{
+    const r=await fetch('/upload',{method:'POST',body:fd});
+    const d=await r.json();
+    if(d.error)throw new Error(d.error);
+    jobId=d.job_id;
+    if(pollTmr)clearInterval(pollTmr);
+    pollTmr=setInterval(poll,1500);
+  }catch(e){showErr(e.message)}
+}
+
+async function poll(){
+  if(!jobId)return;
+  try{
+    const r=await fetch(`/status/${jobId}`);
+    const j=await r.json();
+    updateProg(j);
+    if(j.status==='done'){clearInterval(pollTmr);showResults(j)}
+    else if(j.status==='error'){clearInterval(pollTmr);showErr(j.message)}
+  }catch(e){console.error(e)}
+}
+
+function updateProg(j){
+  document.getElementById('pbar').style.width=j.progress+'%';
+  document.getElementById('pct').textContent=j.progress+'%';
+  document.getElementById('pmsg').textContent=j.message;
+  document.getElementById('pbar-wrap').classList.toggle('pulse',j.status==='processing');
+}
+
+function showResults(j){
+  document.getElementById('prog-card').style.display='none';
+  document.getElementById('res-card').style.display='block';
+  const st=j.stats||{};
+  // Stats chips
+  const sr=document.getElementById('stats-row');
+  const burned=st.burned;
+  sr.innerHTML=`
+    <div class="chip">📊 Đoạn: <span class="cv">${st.total_segments||0}</span></div>
+    <div class="chip">🌐 Ngôn ngữ: <span class="cv">${(st.detected_language||'?').toUpperCase()}</span></div>
+    <div class="chip">🎭 Thể loại: <span class="cv">${st.genre||'general'}</span></div>
+    ${burned?`<div class="chip burned">🔥 Style: <span class="cv">${st.sub_style||'classic'}</span></div>`:''}
+  `;
+  // Burned banner
+  document.getElementById('burned-banner').style.display=burned?'flex':'none';
+  // Downloads
+  const DL_MAP={
+    video_burned:{icon:'🎬',label:'Video có phụ đề',desc:'MP4 · Đã burn-in',main:true},
+    srt_vi:{icon:'🇻🇳',label:'Tiếng Việt .SRT',desc:'SubRip · Phụ đề chính'},
+    vtt_vi:{icon:'🌐',label:'Tiếng Việt .VTT',desc:'WebVTT · Cho web'},
+    ass_vi:{icon:'🎨',label:'ASS có styling',desc:'Advanced SubStation'},
+    srt_original:{icon:'📄',label:'Bản gốc .SRT',desc:'Ngôn ngữ gốc'},
+    srt_bilingual:{icon:'📋',label:'Song ngữ .SRT',desc:'Gốc + Tiếng Việt'},
+  };
+  const dg=document.getElementById('dl-grid');
+  dg.innerHTML='';
+  const outputs=j.outputs||{};
+  // Video burned first
+  if(outputs.video_burned){
+    const a=document.createElement('a');
+    a.href=`/download/${jobId}/video_burned`;
+    a.className='btn-dl main';
+    a.innerHTML=`<span class="di">🎬</span><div class="dd"><span class="dn">Video có phụ đề</span><span class="ds">MP4 · Đã burn-in ✓</span></div><span class="dl-arrow">⬇</span>`;
+    dg.appendChild(a);
+  }
+  Object.entries(outputs).forEach(([k,_])=>{
+    if(k==='video_burned'||!DL_MAP[k])return;
+    const info=DL_MAP[k];
+    const a=document.createElement('a');
+    a.href=`/download/${jobId}/${k}`;
+    a.className='btn-dl';
+    a.innerHTML=`<span class="di">${info.icon}</span><div class="dd"><span class="dn">${info.label}</span><span class="ds">${info.desc}</span></div><span class="dl-arrow">⬇</span>`;
+    dg.appendChild(a);
+  });
+  // Preview
+  const tb=document.getElementById('prev-body');
+  tb.innerHTML='';
+  (j.preview||[]).forEach(s=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td class="ts">${esc(s.start)}</td><td class="torig">${esc(s.original)}</td><td class="tvi">${esc(s.vietnamese)}</td>`;
+    tb.appendChild(tr);
+  });
+  document.getElementById('btn-go').disabled=false;
+}
+
+function showErr(msg){
+  const b=document.getElementById('err-box');
+  b.textContent=msg; b.style.display='block';
+  document.getElementById('pmsg').textContent='❌ Có lỗi xảy ra.';
+  document.getElementById('btn-go').disabled=false;
+}
+
+function resetAll(){
+  if(pollTmr)clearInterval(pollTmr);
+  jobId=null;
+  document.getElementById('res-card').style.display='none';
+  document.getElementById('prog-card').style.display='none';
+  document.getElementById('pbar').style.width='0%';
+  document.getElementById('pct').textContent='0%';
+  document.getElementById('pmsg').textContent='⏳ Đang khởi động...';
+}
+
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+</script>
+</body>
+</html>
