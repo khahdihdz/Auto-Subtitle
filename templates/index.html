@@ -208,7 +208,7 @@ input[type=range]{flex:1;height:4px;accent-color:var(--acc);cursor:pointer}
 .divider{height:1px;background:linear-gradient(90deg,transparent,var(--b1),transparent);margin:20px 0}
 
 /* Preview table */
-.preview-lbl{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--txm);margin-bottom:10px}
+
 .tbl-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{text-align:left;padding:9px 12px;background:var(--s2);color:var(--txm);
@@ -232,6 +232,32 @@ footer a{color:var(--acc);text-decoration:none}
 ::-webkit-scrollbar-track{background:var(--s1)}
 ::-webkit-scrollbar-thumb{background:var(--b2);border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:var(--acc)}
+
+/* ── Frame preview button & modal ── */
+.btn-pf{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r2);
+  color:var(--tx);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;
+  padding:9px 16px;transition:all .2s;display:inline-flex;align-items:center;gap:7px}
+.btn-pf:hover:not(:disabled){border-color:var(--acc);color:var(--acc)}
+.btn-pf:disabled{opacity:.45;cursor:not-allowed}
+.pf-modal{display:none;position:fixed;inset:0;z-index:1000;background:#00000088;
+  align-items:center;justify-content:center;padding:16px}
+.pf-modal.open{display:flex}
+.pf-box{background:var(--s1);border:1px solid var(--b1);border-radius:14px;
+  max-width:900px;width:100%;padding:20px;display:flex;flex-direction:column;gap:14px}
+.pf-title{font-size:13px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--txm)}
+.pf-img-wrap{background:#000;border-radius:8px;overflow:hidden;min-height:120px;
+  display:flex;align-items:center;justify-content:center;position:relative}
+.pf-img-wrap img{width:100%;height:auto;display:block}
+.pf-spin{color:var(--txm);font-size:13px;padding:32px}
+.pf-controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.pf-fs-wrap{display:flex;align-items:center;gap:10px;flex:1;min-width:200px}
+.pf-actions{display:flex;gap:10px;margin-left:auto}
+.btn-pf-close{background:none;border:1px solid var(--b1);border-radius:var(--r2);
+  color:var(--txm);font-family:inherit;font-size:13px;cursor:pointer;padding:7px 14px;transition:all .2s}
+.btn-pf-close:hover{border-color:var(--txm);color:var(--tx)}
+.btn-pf-apply{background:var(--acc);border:none;border-radius:var(--r2);
+  color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;padding:7px 16px;transition:opacity .2s}
+.btn-pf-apply:hover{opacity:.85}
 
 /* ── Donate card ── */
 .donate-card{
@@ -276,6 +302,15 @@ footer a{color:var(--acc);text-decoration:none}
 .float-donate .fd-ico{font-size:17px;animation:heartbeat 2s ease infinite}
 @media(max-width:480px){.float-donate .fd-txt{display:none}}
 @media(max-width:480px){.float-donate{padding:12px}}
+
+@keyframes fadeInRow{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Media player inline ── */
+#media-player-wrap{margin-top:14px;border-radius:var(--r2);overflow:hidden;
+  background:#000;position:relative;display:none}
+#media-player-wrap video,#media-player-wrap audio{
+  width:100%;display:block;max-height:320px;background:#000}
+#media-player-wrap audio{padding:8px;background:var(--s2);max-height:none}
 </style>
 </head>
 <body>
@@ -342,6 +377,7 @@ footer a{color:var(--acc);text-decoration:none}
       <div class="pill" data-g="drama">🎭 Tâm lý</div>
     </div>
   </div>
+
 </div>
 
 <!-- ── Burn-in card ── -->
@@ -371,6 +407,20 @@ footer a{color:var(--acc);text-decoration:none}
       </div>
     </div>
     <div class="field" style="margin-top:14px">
+      <label class="lbl">Cỡ chữ phụ đề (px — mặc định theo style)</label>
+      <div class="slider-wrap">
+        <span style="font-size:11px;color:var(--txm)">Nhỏ</span>
+        <input type="range" id="font-size-slider" min="10" max="72" value="24"
+               oninput="document.getElementById('fs-val').textContent=this.value">
+        <span style="font-size:11px;color:var(--txm)">To</span>
+        <span class="slider-val" id="fs-val">24</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:8px">
+        <input type="checkbox" id="fs-auto" checked onchange="toggleFsAuto()" style="accent-color:var(--acc);width:14px;height:14px;cursor:pointer">
+        <label for="fs-auto" style="font-size:12px;color:var(--txm);cursor:pointer">Tự động theo style (bỏ chọn để tùy chỉnh)</label>
+      </div>
+    </div>
+    <div class="field" style="margin-top:14px">
       <label class="lbl">Chất lượng video (CRF — thấp hơn = đẹp hơn, nặng hơn)</label>
       <div class="slider-wrap">
         <span style="font-size:11px;color:var(--txm)">Đẹp</span>
@@ -379,6 +429,12 @@ footer a{color:var(--acc);text-decoration:none}
         <span style="font-size:11px;color:var(--txm)">Nhỏ</span>
         <span class="slider-val" id="q-val">23</span>
       </div>
+    </div>
+    <div style="margin-top:16px">
+      <button id="btn-preview-frame" onclick="openFramePreview()" class="btn-pf" disabled>
+        🖼️ Xem trước phụ đề trên video
+      </button>
+      <div style="font-size:11px;color:var(--txm);margin-top:6px">Chọn file video để kích hoạt xem trước</div>
     </div>
   </div>
 
@@ -412,7 +468,14 @@ footer a{color:var(--acc);text-decoration:none}
     <button class="file-rm" onclick="removeFile()">✕</button>
   </div>
 
+  <!-- Player tự động khi chọn file -->
+  <div id="media-player-wrap">
+    <video id="media-video" controls preload="metadata" muted playsinline style="display:none"></video>
+    <audio id="media-audio" controls preload="metadata" style="display:none"></audio>
+  </div>
+
   <button class="btn-go" id="btn-go" onclick="submitJob()" disabled>✨ Tạo phụ đề tiếng Việt</button>
+
 </div>
 
 <!-- ── Progress card ── -->
@@ -426,7 +489,13 @@ footer a{color:var(--acc);text-decoration:none}
 
 <!-- ── Results card ── -->
 <div class="card" id="res-card">
-  <div class="card-h">✅ Kết quả</div>
+  <div class="card-h">✅ Kết quả
+    <span id="ttl-badge" style="margin-left:auto;font-size:11px;font-weight:500;
+      letter-spacing:0.5px;color:var(--warn);background:#f59e0b11;
+      border:1px solid #f59e0b33;border-radius:100px;padding:3px 10px;display:none">
+      ⏳ Tự xóa sau <span id="ttl-countdown"></span>
+    </span>
+  </div>
   <div class="stats-row" id="stats-row"></div>
   <div id="burned-banner" style="display:none" class="burned-banner">
     <div class="bb-icon">🎬</div>
@@ -435,13 +504,6 @@ footer a{color:var(--acc);text-decoration:none}
   </div>
   <div class="dl-grid" id="dl-grid"></div>
   <div class="divider"></div>
-  <div class="preview-lbl">👁 Xem trước bản dịch</div>
-  <div class="tbl-wrap">
-    <table>
-      <thead><tr><th>Thời gian</th><th>Nguyên bản</th><th>Tiếng Việt</th></tr></thead>
-      <tbody id="prev-body"></tbody>
-    </table>
-  </div>
   <button class="btn-reset" onclick="resetAll()">↩ Tạo phụ đề mới</button>
 </div>
 
@@ -473,21 +535,25 @@ footer a{color:var(--acc);text-decoration:none}
 </div>
 
 <script>
-let selFile=null, jobId=null, pollTmr=null;
-let curGenre='general', curStyle='classic', burnOn=false, biOn=false;
+let selFile=null, jobId=null, previewId=null, pollTmr=null;
+let curGenre='general', curStyle='classic', burnOn=false, biOn=false, curPronoun='auto';
 
 // Genre pills
 document.getElementById('genre-pills').addEventListener('click',e=>{
   const p=e.target.closest('.pill'); if(!p) return;
-  document.querySelectorAll('.pill').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('#genre-pills .pill').forEach(x=>x.classList.remove('on'));
   p.classList.add('on'); curGenre=p.dataset.g;
+  // Re-stream preview với thể loại mới
 });
+
+// Pronoun mode: luôn dùng auto (suy luận tự động từ ngữ cảnh)
 
 // Style pills
 document.getElementById('style-pills').addEventListener('click',e=>{
   const p=e.target.closest('.style-pill'); if(!p) return;
   document.querySelectorAll('.style-pill').forEach(x=>x.classList.remove('on'));
   p.classList.add('on'); curStyle=p.dataset.s;
+  if(document.getElementById('pf-modal').classList.contains('open')) overlayFrame();
 });
 
 function toggleBurn(){
@@ -497,6 +563,19 @@ function toggleBurn(){
   t.classList.toggle('active',burnOn);
   o.classList.toggle('show',burnOn);
   updateGoBtn();
+  updatePreviewBtn();
+}
+
+function updatePreviewBtn(){
+  const btn=document.getElementById('btn-preview-frame');
+  const canPreview=(previewId||jobId)&&burnOn&&selFile&&is_video_file(selFile.name);
+  btn.disabled=!canPreview;
+  btn.nextElementSibling.textContent=canPreview?'Xem thử kết quả render trước khi xuất'
+    :burnOn?'Chỉ hỗ trợ xem trước với file video':'Bật "Ghi phụ đề vào video" để xem trước';
+}
+
+function is_video_file(name){
+  return /\.(mp4|mkv|avi|mov|webm|flv|wmv|m4v|ts|mts|m2ts)$/i.test(name);
 }
 
 function toggleBi(){
@@ -523,21 +602,62 @@ function handleFile(f){
   document.getElementById('burn-toggle').style.opacity=isVid?'1':'0.4';
   document.getElementById('burn-toggle').style.pointerEvents=isVid?'':'none';
   if(!isVid&&burnOn)toggleBurn();
+
+  // ── Mount media player ──
+  const wrap=document.getElementById('media-player-wrap');
+  const vid=document.getElementById('media-video');
+  const aud=document.getElementById('media-audio');
+  // Revoke URL cũ nếu có
+  if(wrap._objUrl){ URL.revokeObjectURL(wrap._objUrl); wrap._objUrl=null; }
+  const url=URL.createObjectURL(f);
+  wrap._objUrl=url;
+  if(isVid){
+    vid.src=url; vid.style.display='block';
+    aud.src=''; aud.style.display='none';
+    vid.play().catch(()=>{});  // autoplay (muted nếu browser chặn)
+  } else {
+    aud.src=url; aud.style.display='block';
+    vid.src=''; vid.style.display='none';
+    aud.play().catch(()=>{});
+  }
+  wrap.style.display='block';
+
   checkReady();
+  // Upload file ngầm để enable preview trước khi xử lý
+  if(is_video_file(f.name)){
+    previewId=null;
+    updatePreviewBtn();
+    const fd2=new FormData(); fd2.append('file',f);
+    fetch('/upload_preview',{method:'POST',body:fd2})
+      .then(r=>r.json()).then(d=>{
+        if(d.preview_id){ previewId=d.preview_id; updatePreviewBtn(); }
+      }).catch(()=>{});
+  }
 }
 
 function removeFile(){
   selFile=null;
+  // Cleanup player
+  const wrap=document.getElementById('media-player-wrap');
+  const vid=document.getElementById('media-video');
+  const aud=document.getElementById('media-audio');
+  vid.pause(); vid.src=''; vid.style.display='none';
+  aud.pause(); aud.src=''; aud.style.display='none';
+  if(wrap._objUrl){ URL.revokeObjectURL(wrap._objUrl); wrap._objUrl=null; }
+  wrap.style.display='none';
   document.getElementById('file-input').value='';
   document.getElementById('file-info').style.display='none';
   document.getElementById('drop-zone').style.display='block';
+  previewId=null;
   checkReady();
 }
 
 function checkReady(){
   const key=document.getElementById('nim-key').value.trim();
   document.getElementById('btn-go').disabled=!(selFile&&key);
+  updatePreviewBtn();
 }
+
 function updateGoBtn(){checkReady()}
 document.getElementById('nim-key').addEventListener('input',function(){
   const val=this.value.trim();
@@ -554,7 +674,16 @@ document.getElementById('nim-key').addEventListener('input',function(){
     checkReady();
   }
 })();
-function togglePw(){const i=document.getElementById('nim-key');i.type=i.type==='password'?'text':'password'}
+function toggleFsAuto(){
+  const auto=document.getElementById('fs-auto').checked;
+  const slider=document.getElementById('font-size-slider');
+  const val=document.getElementById('fs-val');
+  slider.disabled=auto;
+  slider.style.opacity=auto?'0.4':'1';
+  val.style.opacity=auto?'0.4':'1';
+}
+// init state
+toggleFsAuto();
 function fmtBytes(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(1)+' MB'}
 
 async function submitJob(){
@@ -570,15 +699,19 @@ async function submitJob(){
   fd.append('whisper_model',document.getElementById('whisper-model').value);
   fd.append('source_lang',document.getElementById('source-lang').value);
   fd.append('genre',curGenre);
+  fd.append('pronoun_mode',curPronoun);
   fd.append('bilingual',biOn);
   fd.append('burn_in',burnOn);
   fd.append('sub_style',curStyle);
   fd.append('video_quality',document.getElementById('quality-slider').value);
+  const fsAuto=document.getElementById('fs-auto').checked;
+  if(!fsAuto) fd.append('font_size',document.getElementById('font-size-slider').value);
   try{
     const r=await fetch('/upload',{method:'POST',body:fd});
     const d=await r.json();
     if(d.error)throw new Error(d.error);
     jobId=d.job_id;
+    pfRawFrame=null; // reset frame cache cho job mới
     if(pollTmr)clearInterval(pollTmr);
     pollTmr=setInterval(poll,1500);
   }catch(e){showErr(e.message)}
@@ -614,6 +747,7 @@ function showResults(j){
     <div class="chip">🌐 Ngôn ngữ: <span class="cv">${(st.detected_language||'?').toUpperCase()}</span></div>
     <div class="chip">🎭 Thể loại: <span class="cv">${st.genre||'general'}</span></div>
     ${burned?`<div class="chip burned">🔥 Style: <span class="cv">${st.sub_style||'classic'}</span></div>`:''}
+    ${st.font_size?`<div class="chip">🔤 Cỡ chữ: <span class="cv">${st.font_size}px</span></div>`:''}
   `;
   // Burned banner
   document.getElementById('burned-banner').style.display=burned?'flex':'none';
@@ -634,6 +768,7 @@ function showResults(j){
     const a=document.createElement('a');
     a.href=`/download/${jobId}/video_burned`;
     a.className='btn-dl main';
+    a.dataset.fileType='video_burned';
     a.innerHTML=`<span class="di">🎬</span><div class="dd"><span class="dn">Video có phụ đề</span><span class="ds">MP4 · Đã burn-in ✓</span></div><span class="dl-arrow">⬇</span>`;
     dg.appendChild(a);
   }
@@ -643,17 +778,65 @@ function showResults(j){
     const a=document.createElement('a');
     a.href=`/download/${jobId}/${k}`;
     a.className='btn-dl';
+    a.dataset.fileType=k;
     a.innerHTML=`<span class="di">${info.icon}</span><div class="dd"><span class="dn">${info.label}</span><span class="ds">${info.desc}</span></div><span class="dl-arrow">⬇</span>`;
     dg.appendChild(a);
   });
-  // Preview
-  const tb=document.getElementById('prev-body');
-  tb.innerHTML='';
-  (j.preview||[]).forEach(s=>{
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td class="ts">${esc(s.start)}</td><td class="torig">${esc(s.original)}</td><td class="tvi">${esc(s.vietnamese)}</td>`;
-    tb.appendChild(tr);
-  });
+  // Countdown + file-status polling
+  if(j.expires_at){
+    const badge=document.getElementById('ttl-badge');
+    const cd=document.getElementById('ttl-countdown');
+    badge.style.display='inline-flex';
+    function markFilesExpired(){
+      badge.innerHTML='🗑️ File đã bị xóa';
+      badge.style.color='var(--err)';
+      badge.style.background='#f43f5e11';
+      badge.style.border='1px solid #f43f5e33';
+      document.querySelectorAll('#dl-grid .btn-dl').forEach(a=>{
+        a.style.opacity='0.4';a.style.pointerEvents='none';
+      });
+    }
+    function updateDownloadStates(files){
+      document.querySelectorAll('#dl-grid .btn-dl').forEach(a=>{
+        const ft=a.dataset.fileType;
+        if(ft && files[ft]===false){
+          a.style.opacity='0.4';a.style.pointerEvents='none';
+          const ds=a.querySelector('.ds');
+          if(ds&&!ds.textContent.includes('đã xóa')) ds.textContent+=' · đã xóa';
+        }
+      });
+    }
+    if(window._ttlTimer)clearInterval(window._ttlTimer);
+    if(window._fileStatusTimer)clearInterval(window._fileStatusTimer);
+    // Countdown mỗi giây từ expires_at server trả về
+    window._ttlTimer=setInterval(()=>{
+      const rem=Math.max(0,Math.round(j.expires_at-Date.now()/1000));
+      if(rem===0){clearInterval(window._ttlTimer);return;}
+      const m=Math.floor(rem/60),s=rem%60;
+      cd.textContent=m>0?`${m} phút ${s}s`:`${s}s`;
+    },1000);
+    // Poll /file_status mỗi 30s để đồng bộ trạng thái thực tế từ server
+    async function checkFileStatus(){
+      try{
+        const r=await fetch(`/file_status/${jobId}`);
+        const fs=await r.json();
+        if(fs.expired){
+          clearInterval(window._fileStatusTimer);
+          clearInterval(window._ttlTimer);
+          markFilesExpired();
+        } else {
+          updateDownloadStates(fs.files||{});
+          // Cập nhật countdown nếu server trả về remaining mới hơn
+          if(fs.remaining_seconds!=null){
+            const serverExpiry=Date.now()/1000+fs.remaining_seconds;
+            j.expires_at=serverExpiry;
+          }
+        }
+      }catch(e){console.warn('file_status error',e);}
+    }
+    checkFileStatus(); // Kiểm tra ngay lập tức
+    window._fileStatusTimer=setInterval(checkFileStatus,30000);
+  }
   document.getElementById('btn-go').disabled=false;
 }
 
@@ -666,6 +849,8 @@ function showErr(msg){
 
 function resetAll(){
   if(pollTmr)clearInterval(pollTmr);
+  if(window._ttlTimer)clearInterval(window._ttlTimer);
+  if(window._fileStatusTimer)clearInterval(window._fileStatusTimer);
   jobId=null;
   document.getElementById('res-card').style.display='none';
   document.getElementById('prog-card').style.display='none';
@@ -675,6 +860,144 @@ function resetAll(){
 }
 
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+// ── Frame preview modal ─────────────────────────────────────────────────────
+let pfRawFrame=null;
+let pfOverlayCtrl=null;
+
+function openFramePreview(){
+  if(!(previewId||jobId)||!burnOn) return;
+  document.getElementById('pf-modal').classList.add('open');
+  const fsAuto=document.getElementById('fs-auto').checked;
+  const pfSlider=document.getElementById('pf-fs-slider');
+  pfSlider.value=document.getElementById('font-size-slider').value;
+  document.getElementById('pf-fs-val').textContent=pfSlider.value;
+  pfSlider.disabled=fsAuto;
+  pfSlider.style.opacity=fsAuto?'0.4':'1';
+  if(pfRawFrame){ overlayFrame(); } else { fetchRawFrame(); }
+}
+
+function closeFramePreview(){
+  document.getElementById('pf-modal').classList.remove('open');
+}
+
+function applyFontSize(){
+  const pfSlider=document.getElementById('pf-fs-slider');
+  const fsAuto=document.getElementById('fs-auto');
+  document.getElementById('font-size-slider').value=pfSlider.value;
+  document.getElementById('fs-val').textContent=pfSlider.value;
+  if(fsAuto.checked){ fsAuto.checked=false; toggleFsAuto(); }
+  closeFramePreview();
+}
+
+function pfShowSpin(msg){
+  document.getElementById('pf-spin').textContent=msg||'⏳ Đang xử lý...';
+  document.getElementById('pf-spin').style.display='block';
+  document.getElementById('pf-img').style.display='none';
+  document.getElementById('pf-err').style.display='none';
+}
+function pfShowImg(src){
+  document.getElementById('pf-spin').style.display='none';
+  document.getElementById('pf-err').style.display='none';
+  const img=document.getElementById('pf-img');
+  img.src=src; img.style.display='block';
+}
+function pfShowErr(msg){
+  document.getElementById('pf-spin').style.display='none';
+  document.getElementById('pf-img').style.display='none';
+  const e=document.getElementById('pf-err');
+  e.textContent='❌ '+msg; e.style.display='block';
+}
+
+function fetchRawFrame(){
+  pfRawFrame=null;
+  pfShowSpin('⏳ Đang trích frame từ video...');
+  const fd=new FormData();
+  fd.append('job_id', jobId||previewId);
+  fetch('/preview_raw_frame',{method:'POST',body:fd})
+    .then(async r=>{
+      const text=await r.text();
+      if(text.trim().startsWith('<'))
+        throw new Error(`Server lỗi HTTP ${r.status} — không nhận được JSON (nhận HTML). Kiểm tra console.`);
+      return JSON.parse(text);
+    })
+    .then(d=>{
+      if(d.error){ pfShowErr(d.error); return; }
+      pfRawFrame=d.image;
+      overlayFrame();
+    })
+    .catch(e=>pfShowErr('Lỗi: '+e.message));
+}
+
+function overlayFrame(){
+  if(!pfRawFrame) return;
+  if(pfOverlayCtrl){ pfOverlayCtrl.abort(); pfOverlayCtrl=null; }
+  pfShowSpin('⏳ Đang render phụ đề...');
+  const fsAuto=document.getElementById('fs-auto').checked;
+  const fd=new FormData();
+  // pfRawFrame là full data URI, tách lấy phần base64
+  const b64part=pfRawFrame.includes(',') ? pfRawFrame.split(',')[1] : pfRawFrame;
+  fd.append('frame',b64part);
+  fd.append('sub_style',curStyle);
+  fd.append('bilingual',biOn);
+  if(!fsAuto) fd.append('font_size',document.getElementById('pf-fs-slider').value);
+  const ctrl=new AbortController();
+  pfOverlayCtrl=ctrl;
+  fetch('/preview_frame',{method:'POST',body:fd,signal:ctrl.signal})
+    .then(async r=>{
+      const text=await r.text();
+      if(text.trim().startsWith('<'))
+        throw new Error(`Server lỗi HTTP ${r.status} — không nhận được JSON (nhận HTML).`);
+      return JSON.parse(text);
+    })
+    .then(d=>{
+      pfOverlayCtrl=null;
+      if(d.error){ pfShowErr(d.error); return; }
+      pfShowImg(d.image);
+    })
+    .catch(e=>{ if(e.name!=='AbortError') pfShowErr('Lỗi: '+e.message); });
+}
+
+// Slider kéo → overlay ngay, không debounce
+document.getElementById('pf-fs-slider').addEventListener('input',function(){
+  document.getElementById('pf-fs-val').textContent=this.value;
+  overlayFrame();
+});
+
+// Reset cache frame khi đổi file
+const _pfOrigRemove=window.removeFile;
+window.removeFile=function(){ pfRawFrame=null; if(_pfOrigRemove) _pfOrigRemove(); };
+
+// Đóng modal khi click ngoài
+document.getElementById('pf-modal').addEventListener('click',function(e){
+  if(e.target===this) closeFramePreview();
+});
 </script>
+
+<!-- ── Frame preview modal ── -->
+<div class="pf-modal" id="pf-modal">
+  <div class="pf-box">
+    <div class="pf-title">🖼️ Xem trước phụ đề trên video</div>
+    <div class="pf-img-wrap">
+      <div class="pf-spin" id="pf-spin">⏳ Đang tạo frame xem trước...</div>
+      <img id="pf-img" src="" alt="preview" style="display:none">
+      <div id="pf-err" style="display:none;color:var(--err);font-size:13px;padding:24px"></div>
+    </div>
+    <div class="pf-controls">
+      <div class="pf-fs-wrap">
+        <span style="font-size:12px;color:var(--txm);white-space:nowrap">Cỡ chữ:</span>
+        <span style="font-size:11px;color:var(--txm)">Nhỏ</span>
+        <input type="range" id="pf-fs-slider" min="10" max="72" value="24" style="flex:1">
+        <span style="font-size:11px;color:var(--txm)">To</span>
+        <span class="slider-val" id="pf-fs-val">24</span>
+        <span style="font-size:11px;color:var(--txm)">px</span>
+      </div>
+      <div class="pf-actions">
+        <button class="btn-pf-apply" onclick="applyFontSize()">✅ Áp dụng cỡ chữ này</button>
+        <button class="btn-pf-close" onclick="closeFramePreview()">✕ Đóng</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
