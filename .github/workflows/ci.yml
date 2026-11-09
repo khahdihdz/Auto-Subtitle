@@ -19,7 +19,7 @@ jobs:
       - run: npm run build
   deploy-worker:
     needs: build
-    if: github.event_name == 'push'
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
