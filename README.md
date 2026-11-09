@@ -1,123 +1,55 @@
-# 🎬 SubViet — Auto Subtitle Tiếng Việt Tự Nhiên
+# SUBTITLE AI — Automatic Subtitle Studio
 
-Tool tự động tạo phụ đề tiếng Việt **tự nhiên** từ video/audio, powered by:
-- 🎙️ **OpenAI Whisper** — Nhận dạng giọng nói (tiny / base / small / medium / large)
-- 🤖 **NVIDIA NIM API** (Llama 3.3 70B) — Dịch tự nhiên theo thể loại nội dung
+Xây dựng mới nền tảng web tiếng Việt để tạo phụ đề tự động, trích xuất subtitle track, chia nhỏ SRT/VTT và biên tập phụ đề.
 
----
+## Kiến trúc
+- Frontend: React + TypeScript + Vite, deploy trên Vercel.
+- Media chunking: FFmpeg.wasm chạy trong trình duyệt, chia âm thanh thành đoạn 8 phút.
+- Speech-to-text: Groq Whisper Large V3 Turbo.
+- API gateway: Cloudflare Worker giữ Groq API key ở phía server.
+- Editor: nhập, sửa câu/timestamp và xuất SRT/VTT.
+- PWA: manifest + service worker.
 
-## 🖥️ Giao diện Web
+## Chạy local
+1. npm install
+2. Sao chép .env.example thành .env và điền VITE_WORKER_URL.
+3. npm run dev
 
-![SubViet Web UI](ui-mockup.svg)
+## Deploy Cloudflare Worker
+1. Tạo Groq API key tại https://console.groq.com/keys.
+2. Cài Wrangler: npm install -g wrangler
+3. cd worker && wrangler login
+4. wrangler secret put GROQ_API_KEY
+5. wrangler deploy
+6. Sao chép URL Worker.
 
----
+## Deploy Vercel
+1. Import repository khahdihdz/Auto-Subtitle vào Vercel.
+2. Framework: Vite; Build command: npm run build; Output: dist.
+3. Thêm Environment Variable VITE_WORKER_URL bằng URL Worker.
+4. Redeploy.
 
-## 🗺️ Pipeline xử lý
+## GitHub Actions
+CI chạy typecheck và build. Worker tự deploy nếu đã cấu hình GitHub Actions secrets CLOUDFLARE_API_TOKEN và CLOUDFLARE_ACCOUNT_ID. Groq key phải được đặt riêng trong Worker bằng Wrangler secret.
 
-![SubViet pipeline](pipeline.svg)
+## Tính năng hiện có
+- Tạo phụ đề từ video/audio qua Groq Whisper.
+- Chia audio thành đoạn 8 phút, gửi tuần tự và ghép timestamp.
+- Retry giới hạn khi gặp lỗi 429 hoặc lỗi tạm thời.
+- Tách subtitle track văn bản có sẵn qua FFmpeg.wasm nếu codec được hỗ trợ.
+- Nhập SRT, chỉnh sửa nội dung và timestamp, thêm/xóa câu.
+- Chia file theo thời lượng; xuất SRT và VTT.
+- PWA cài đặt được trên thiết bị hỗ trợ.
 
----
+## Giới hạn kỹ thuật
+- Groq nhận tối đa 25 MB mỗi request; mỗi audio chunk được kiểm tra dưới 24 MB.
+- FFmpeg.wasm cần tải WebAssembly core lần đầu và dùng RAM đáng kể trên điện thoại. Video rất lớn hoặc thiết bị ít RAM nên dùng media-processing service riêng chạy FFmpeg + queue + R2.
+- Subtitle bitmap (PGS/VobSub) cần OCR riêng, không thể trích xuất thành text bằng cách remux thông thường.
+- Bản này chưa bật dịch phụ đề, burn-in video, diarization hay lưu trữ cloud job dài hạn.
+- Không chạy FFmpeg nặng trên Cloudflare Workers hoặc Vercel Functions.
 
-## 🚀 Cài đặt
+## Bảo mật
+Groq API key chỉ nằm trong Cloudflare Worker secret. Không đặt key trong frontend, biến VITE_* hoặc commit GitHub.
 
-```bash
-cd auto-subtitle
-pip install -r requirements.txt
-```
-
-> Lần đầu chạy sẽ tự tải Whisper model (tiny ~75MB, base ~145MB, medium ~1.5GB)
-
-```bash
-python app.py
-```
-
-Truy cập: **http://localhost:5000**
-
----
-
-## ✨ Tính năng Web UI
-
-**Cài đặt chung**
-- Nhập NVIDIA NIM API Key — **tự động lưu vào localStorage**, không mất khi refresh
-- Chọn Whisper model: tiny / base / small / medium / large
-- Chọn ngôn ngữ gốc: Auto / English / 日本語 / 한국어 / 中文 / Français / Español / Deutsch / ภาษาไทย
-- Chọn thể loại: Tổng quát / Tình cảm / Hành động / Hài hước / Kinh dị / Tài liệu / Anime / Tâm lý
-
-**Burn-in (render phụ đề vào video)**
-- Toggle bật/tắt burn-in (chỉ hoạt động với file video)
-- 6 style phụ đề: 🎬 Classic · 🌟 Cinema · 🟥 Netflix · 💜 Neon · ⬜ Minimal · 🎭 Drama
-- Chỉnh chất lượng video CRF (18–32)
-
-**Song ngữ**
-- Toggle bật/tắt song ngữ — dòng gốc nhỏ phía trên, tiếng Việt lớn phía dưới
-
-**Upload & kết quả**
-- Drag & drop hoặc click để chọn file
-- Thanh tiến trình real-time (poll mỗi 1.5s)
-- Xem trước bảng phụ đề (gốc + tiếng Việt)
-- Tải về: SRT / VTT / Song ngữ SRT / ASS / Video burn-in MP4
-
----
-
-## ⌨️ Dùng CLI
-
-```bash
-# Cơ bản
-python cli.py video.mp4 --key nvapi-xxx
-
-# Nâng cao
-python cli.py movie.mkv --key nvapi-xxx --genre romance --model small --bilingual
-
-# Anime/phim Nhật
-python cli.py anime.mp4 --key nvapi-xxx --genre anime --lang ja --model medium
-```
-
-### Tham số CLI:
-
-| Tham số | Mô tả | Mặc định |
-|---------|-------|---------|
-| `--key` | NVIDIA NIM API Key | Bắt buộc |
-| `--model` | Whisper: tiny/base/small/medium/large | base |
-| `--lang` | Ngôn ngữ gốc: auto/en/ja/ko/zh/fr/es/de/th | auto |
-| `--genre` | Thể loại: general/romance/action/comedy/horror/documentary/anime/drama | general |
-| `--bilingual` | Xuất thêm file song ngữ | False |
-| `--output` | Thư mục output | Cùng thư mục video |
-
----
-
-## 📁 Định dạng hỗ trợ
-
-**Video:** mp4, mkv, avi, mov, webm  
-**Audio:** mp3, wav, m4a, flac, ogg
-
-## 📤 Output
-
-| File | Mô tả |
-|------|-------|
-| `*_vi.srt` | Phụ đề tiếng Việt (SubRip) |
-| `*_vi.vtt` | Phụ đề tiếng Việt (WebVTT) |
-| `*_original.srt` | Ngôn ngữ gốc |
-| `*_bilingual.srt` | Song ngữ gốc + tiếng Việt |
-| `*_vi.ass` | ASS subtitle (dùng để burn-in) |
-| `*_subtitled.mp4` | Video đã burn-in phụ đề |
-
----
-
-## 🔑 Lấy NVIDIA NIM API Key
-
-1. Truy cập [build.nvidia.com](https://build.nvidia.com)
-2. Đăng ký / đăng nhập
-3. Vào **API Keys** → Tạo key mới
-4. Key có format: `nvapi-xxxxxxxxx`
-
----
-
-## 💡 Mẹo chọn Model Whisper
-
-| Model | RAM | Tốc độ | Độ chính xác |
-|-------|-----|--------|--------------|
-| tiny | ~1GB | ⚡⚡⚡ | ★★☆ |
-| base | ~1GB | ⚡⚡ | ★★★ |
-| small | ~2GB | ⚡ | ★★★★ |
-| medium | ~5GB | 🐢 | ★★★★★ |
-| large | ~10GB | 🐢🐢 | ★★★★★ |
+## License
+MIT
