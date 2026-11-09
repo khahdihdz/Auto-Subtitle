@@ -17,16 +17,19 @@ jobs:
       - run: npm run typecheck
       - run: npm run build
   deploy-worker:
-    if: ${{ github.event_name == 'push' && secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' }}
     needs: build
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm install -g wrangler
-      - run: wrangler deploy --config worker/wrangler.toml
+      - name: Install Wrangler
+        run: npm install -g wrangler
+      - name: Deploy Cloudflare Worker (only when secrets exist)
+        if: ${{ env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != '' }}
+        run: wrangler deploy --config worker/wrangler.toml
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
