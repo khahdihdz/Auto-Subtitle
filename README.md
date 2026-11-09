@@ -30,7 +30,7 @@ Xây dựng mới nền tảng web tiếng Việt để tạo phụ đề tự �
 4. Redeploy.
 
 ## GitHub Actions
-CI chạy typecheck và build. Worker tự deploy nếu đã cấu hình GitHub Actions secrets CLOUDFLARE_API_TOKEN và CLOUDFLARE_ACCOUNT_ID. Groq key phải được đặt riêng trong Worker bằng Wrangler secret.
+CI chạy typecheck và build. Worker tự deploy nếu đã cấu hình GitHub Actions secrets CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID và GROQ_API_KEY. Workflow sẽ deploy Worker rồi nạp GROQ_API_KEY vào Worker secret. Không commit các giá trị này vào source code.
 
 ## Tính năng hiện có
 - Tạo phụ đề từ video/audio qua Groq Whisper.
